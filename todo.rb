@@ -6,15 +6,15 @@ class Todo < ActiveRecord::Base
   end
 
   def self.overdue_todos
-    all.where("due_date < ?", Date.today.to_s(:db)).map { |todo| todo.to_displayable_string }.join("\n")
+    all.where("due_date < ?", Date.today).map { |todo| todo.to_displayable_string }.join("\n")
   end
 
   def self.due_today_todos
-    all.where("due_date = ?", Date.today.to_s(:db)).map { |todo| todo.to_displayable_string }.join("\n")
+    all.where("due_date = ?", Date.today).map { |todo| todo.to_displayable_string }.join("\n")
   end
 
   def self.due_later_todos
-    all.where("due_date > ?", Date.today.to_s(:db)).map { |todo| todo.to_displayable_string }.join("\n")
+    all.where("due_date > ?", Date.today).map { |todo| todo.to_displayable_string }.join("\n")
   end
 
   def to_displayable_string
