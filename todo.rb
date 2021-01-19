@@ -5,24 +5,16 @@ class Todo < ActiveRecord::Base
     due_date == Date.today
   end
 
-  def overdue?
-    due_date < Date.today
-  end
-
-  def due_later?
-    due_date > Date.today
-  end
-
   def self.overdue_todos
-    all.filter { |todo| todo.overdue? }.map { |todo| todo.to_displayable_string }.join("\n")
+    all.where("due_date < ?", Date.today.to_s(:db)).map { |todo| todo.to_displayable_string }.join("\n")
   end
 
   def self.due_today_todos
-    all.filter { |todo| todo.due_today? }.map { |todo| todo.to_displayable_string }.join("\n")
+    all.where("due_date = ?", Date.today.to_s(:db)).map { |todo| todo.to_displayable_string }.join("\n")
   end
 
   def self.due_later_todos
-    all.filter { |todo| todo.due_later? }.map { |todo| todo.to_displayable_string }.join("\n")
+    all.where("due_date > ?", Date.today.to_s(:db)).map { |todo| todo.to_displayable_string }.join("\n")
   end
 
   def to_displayable_string
